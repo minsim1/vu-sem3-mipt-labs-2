@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MIPT_LAB_2</string>
+    <string name="mainButtonText">Paspausk mane!</string>
+    <string name="textOnButtonClick">pasirinktas užrašas</string>
 </resources>
