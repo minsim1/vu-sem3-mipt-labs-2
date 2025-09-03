@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">MIPT_LAB_2</string>
-    <string name="mainButtonText">Paspausk mane!</string>
-    <string name="textOnButtonClick">pasirinktas užrašas</string>
+    <string name="inputText">Input text in grey box:</string>
+    <string name="go">GO!</string>
+    <string name="noWords">The input text contains no words</string>
+    <string name="noChars">The input field is empty</string>
+    <string name="foundWords">"Number of words found: "</string>
+    <string name="foundChars">"Number of characters found: "</string>
 </resources>
