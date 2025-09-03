@@ -23,11 +23,16 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Button myButton = findViewById(R.id.mainButton);
-        TextView myTextView = findViewById(R.id.mainTextView);
+        Button changeColorButton = findViewById(R.id.changeColorButton);
+        Button revealButton = findViewById(R.id.mainButton);
+        TextView mainTextView = findViewById(R.id.mainTextView);
 
-        myButton.setOnClickListener(v ->
-                myTextView.setText(getString(R.string.textOnButtonClick))
+        revealButton.setOnClickListener(v ->
+                mainTextView.setText(getString(R.string.textOnButtonClick))
+        );
+
+        changeColorButton.setOnClickListener(v ->
+            mainTextView.setTextColor(getColor(R.color.blue))
         );
     }
 }
