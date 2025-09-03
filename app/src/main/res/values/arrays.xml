@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="countOptions">
-        <item>Count words</item>
-        <item>Count characters</item>
-    </string-array>
-</resources>
