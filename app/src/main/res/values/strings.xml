@@ -1,25 +1,19 @@
 <resources>
     <string name="app_name">MIPT_LAB_2</string>
-    <string name="plusMinus">+/-</string>
-    <string name="one">1</string>
-    <string name="two">2</string>
-    <string name="four">4</string>
-    <string name="seven">7</string>
-    <string name="delete">del</string>
-    <string name="three">3</string>
-    <string name="eight">8</string>
-    <string name="nine">9</string>
-    <string name="six">6</string>
-    <string name="clear">C</string>
-    <string name="equalsSymbol">=</string>
-    <string name="five">5</string>
-    <string name="squareRoot">√</string>
-    <string name="division">/</string>
-    <string name="multiplication">*</string>
-    <string name="subtraction">-</string>
-    <string name="addition">+</string>
-    <string name="zero">0</string>
-    <string name="dot">.</string>
-    <string name="divByZeroErr">Can not divide by zero</string>
-    <string name="sqrtFromNegNum">Can not square root a negative number</string>
+    <string name="add_note">Add note</string>
+    <string name="delete_note">Delete note</string>
+    <string name="create_note">Create note</string>
+    <string name="main_toolbar_text">My notes</string>
+    <string name="title_activity_add_note">AddNoteActivity</string>
+    <string name="go_back">Go back</string>
+    <string name="title">Title</string>
+    <string name="content">Content</string>
+    <string name="select_note_to_delete">Select note to delete</string>
+    <string name="delete">Delete</string>
+    <string name="no_title_error">The note must have a title</string>
+    <string name="note_title_taken_error">The note with this title already exists</string>
+    <string name="no_body_error">The note must have a body</string>
+    <string name="note_created">Note created successfully</string>
+    <string name="no_notes_error">No notes exist</string>
+    <string name="delete_success_message">Successfully deleted note</string>
 </resources>
