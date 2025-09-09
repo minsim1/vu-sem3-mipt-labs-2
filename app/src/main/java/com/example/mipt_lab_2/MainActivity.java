@@ -1,8 +1,11 @@
 package com.example.mipt_lab_2;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,10 +13,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private final String TAG = "MainActivity";
+    private List<Currency> currencyList;
+    private String currentFilter = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG,"onCreate called");
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -22,62 +35,59 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // fetch buttons from activity
-        Button buttonFor0 = findViewById(R.id.buttonFor0);
-        Button buttonFor1 = findViewById(R.id.buttonFor1);
-        Button buttonFor2 = findViewById(R.id.buttonFor2);
-        Button buttonFor3 = findViewById(R.id.buttonFor3);
-        Button buttonFor4 = findViewById(R.id.buttonFor4);
-        Button buttonFor5 = findViewById(R.id.buttonFor5);
-        Button buttonFor6 = findViewById(R.id.buttonFor6);
-        Button buttonFor7 = findViewById(R.id.buttonFor7);
-        Button buttonFor8 = findViewById(R.id.buttonFor8);
-        Button buttonFor9 = findViewById(R.id.buttonFor9);
+        Button filterButton = findViewById(R.id.filterButton);
+        Button clearButton = findViewById(R.id.clearButton);
+        EditText currencyFilterText = findViewById(R.id.filterEditText);
 
-        Button buttonForAddition = findViewById(R.id.buttonForAddition);
-        Button buttonForSubtraction = findViewById(R.id.buttonForSubtraction);
-        Button buttonForMultiplication = findViewById(R.id.buttonForMultiplication);
-        Button buttonForDivision = findViewById(R.id.buttonForDivision);
-        Button buttonForSquareRoot = findViewById(R.id.buttonForSquareRoot);
+        filterButton.setOnClickListener(v -> {
+            Log.i(TAG,"filter button pressed");
+            this.currentFilter = currencyFilterText.getText().toString();
+            this.showCurrencies();
+        });
 
-        Button buttonForDot = findViewById(R.id.buttonForDot);
+        clearButton.setOnClickListener(v -> {
+            Log.i(TAG,"clear button pressed");
+            this.currentFilter = "";
+            currencyFilterText.getText().clear();
+            this.showCurrencies();
+        });
 
-        Button buttonForEquals = findViewById(R.id.equalsButton);
-        Button buttonForBackspace = findViewById(R.id.backspaceButton);
-        Button buttonForFullClear = findViewById(R.id.buttonFullClear);
-        Button buttonForChangePolarity = findViewById(R.id.buttonChangePolarity);
+        // Running asyncrhonous operations on the UI is forbidden, a new thread is needed :]
+        new Thread(() -> {
+            DataLoader loader = new DataLoader();
+            String data = loader.fetchData();
 
-        TextView display = findViewById(R.id.mainTextView);
+            Parser parser = new Parser();
+            this.currencyList = parser.parse(data);
 
-        CalculatorWrapper calculator = new CalculatorWrapper(
-                display,
-                getString(R.string.divByZeroErr),
-                getString(R.string.sqrtFromNegNum)
-        );
+            runOnUiThread(this::showCurrencies);
+        }).start();
+    }
 
-        // connect buttons to calculator
-        buttonFor0.setOnClickListener(v -> calculator.inputNumber(0));
-        buttonFor1.setOnClickListener(v -> calculator.inputNumber(1));
-        buttonFor2.setOnClickListener(v -> calculator.inputNumber(2));
-        buttonFor3.setOnClickListener(v -> calculator.inputNumber(3));
-        buttonFor4.setOnClickListener(v -> calculator.inputNumber(4));
-        buttonFor5.setOnClickListener(v -> calculator.inputNumber(5));
-        buttonFor6.setOnClickListener(v -> calculator.inputNumber(6));
-        buttonFor7.setOnClickListener(v -> calculator.inputNumber(7));
-        buttonFor8.setOnClickListener(v -> calculator.inputNumber(8));
-        buttonFor9.setOnClickListener(v -> calculator.inputNumber(9));
+    private void showCurrencies(){
+        Log.i(TAG,"showCurrencies called");
+        List<Currency> filteredCurrencies = new ArrayList<>();
 
-        buttonForAddition.setOnClickListener(v -> calculator.inputOperand('+'));
-        buttonForSubtraction.setOnClickListener(v -> calculator.inputOperand('-'));
-        buttonForMultiplication.setOnClickListener(v -> calculator.inputOperand('*'));
-        buttonForDivision.setOnClickListener(v -> calculator.inputOperand('/'));
-        buttonForSquareRoot.setOnClickListener(v -> calculator.inputSquareRoot());
+        if(currentFilter.isBlank()){
+            filteredCurrencies = this.currencyList;
+        }else{
+            // Filter currencies
+            for(Currency currency : this.currencyList){
+                if(currency.code.startsWith(this.currentFilter.toUpperCase())){
+                    filteredCurrencies.add(new Currency(currency.code, currency.value));
+                }
+            }
+        }
 
-        buttonForDot.setOnClickListener(v -> calculator.inputDot());
+        // Display currencies
+        ListView currencyList = findViewById(R.id.currencyList);
+        CurrencyAdapter currencyAdapter = new CurrencyAdapter(this,filteredCurrencies);
+        currencyList.setAdapter(currencyAdapter);
 
-        buttonForEquals.setOnClickListener(v -> calculator.equals());
-        buttonForBackspace.setOnClickListener(v -> calculator.backspace());
-        buttonForFullClear.setOnClickListener(v -> calculator.fullClear());
-        buttonForChangePolarity.setOnClickListener(v -> calculator.switchPolarity());
+        if(filteredCurrencies.isEmpty()){
+            // Would also be "true" if parser didn't give any data at all, but let's hope the data finds it's way to the user by this point :]
+            String noCurrenciesMessage = getString(R.string.no_currencies_error);
+            Toast.makeText(this, noCurrenciesMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 }
