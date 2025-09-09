@@ -2,6 +2,7 @@ package com.example.mipt_lab_2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("MainActivity","Called onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -37,12 +39,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.i("MainActivity","Called onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i("MainActivity","Called onOptionsItemSelected");
         int id = item.getItemId();
         if (id == R.id.menu_add_note) {
             Intent intent = new Intent(this, AddNoteActivity.class);

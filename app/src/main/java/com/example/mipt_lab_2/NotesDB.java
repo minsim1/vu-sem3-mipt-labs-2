@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -21,10 +22,12 @@ public class NotesDB extends SQLiteOpenHelper {
 
     public NotesDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        Log.i("NotesDB","Created class instance");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.i("NotesDB","Called on create");
         String CREATE_TABLE = "CREATE TABLE " + TABLE_NOTES + "("
                 + COLUMN_TITLE + " TEXT PRIMARY KEY,"  // title is unique identifier
                 + COLUMN_BODY + " TEXT"
@@ -34,12 +37,14 @@ public class NotesDB extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.i("NotesDB","Called on upgrade");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
         onCreate(db);
     }
 
     // Insert a note. If a note with the same title exists, replace it.
     public void insertNote(String title, String body) {
+        Log.i("NotesDB","Inserting note. Title: " + title + " .Body: " + body);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_TITLE, title);
@@ -50,6 +55,7 @@ public class NotesDB extends SQLiteOpenHelper {
 
     // Get all notes
     public ArrayList<Note> getAllNotes() {
+        Log.i("NotesDB","Called get all notes method");
         ArrayList<Note> notesList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NOTES, null);
@@ -68,6 +74,7 @@ public class NotesDB extends SQLiteOpenHelper {
 
     // Delete a note by title
     public void deleteNoteByTitle(String title) {
+        Log.i("NotesDB","Deleting notes by title:" + title);
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NOTES, COLUMN_TITLE + "=?", new String[]{title});
         db.close();
@@ -75,6 +82,7 @@ public class NotesDB extends SQLiteOpenHelper {
 
     // Check if a note exists by title
     public boolean noteExists(String title) {
+        Log.i("NotesDB","Checking if note with title exists:" + title);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(
                 TABLE_NOTES,

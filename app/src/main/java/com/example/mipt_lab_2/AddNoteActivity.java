@@ -2,6 +2,7 @@ package com.example.mipt_lab_2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("AddNoteActivity","Called onCreate");
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_note);
@@ -32,11 +34,13 @@ public class AddNoteActivity extends AppCompatActivity {
         EditText noteBody = findViewById(R.id.bodyEditText);
 
         goBackButton.setOnClickListener(v -> {
+            Log.i("AddNoteActivity","Clicked go back button");
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
 
         createNoteButton.setOnClickListener(v -> {
+            Log.i("AddNoteActivity","Clicked create note button");
             NotesDB notesDataBase = new NotesDB(this);
 
             String title = noteTitle.getText().toString().trim();

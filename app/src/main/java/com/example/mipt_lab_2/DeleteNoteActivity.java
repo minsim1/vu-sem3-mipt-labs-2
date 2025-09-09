@@ -2,6 +2,7 @@ package com.example.mipt_lab_2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -19,6 +20,7 @@ public class DeleteNoteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("DeleteNoteActivity","Called onCreate");
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_delete_note);
@@ -49,11 +51,13 @@ public class DeleteNoteActivity extends AppCompatActivity {
         noteSelectSpinner.setAdapter(adapter);
 
         goBackButton.setOnClickListener(v -> {
+            Log.i("DeleteNoteActivity","Clicked go back button");
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
 
         deleteButton.setOnClickListener(v -> {
+            Log.i("DeleteNoteActivity","Delete note button");
             String selectedTitle = noteSelectSpinner.getSelectedItem().toString();
             notesDataBase.deleteNoteByTitle(selectedTitle);
             String successMessage = getString(R.string.delete_success_message);

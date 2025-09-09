@@ -1,6 +1,7 @@
 package com.example.mipt_lab_2;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,13 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 
     public NoteAdapter(Context context, List<Note> notes) {
         super(context, 0, notes);
+        Log.i("NoteAdapter","Instantiated NoteAdapter");
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+        Log.i("NoteAdapter","Called get view");
         Note note = getItem(position);
 
         if (convertView == null) {
